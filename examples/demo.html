@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="The front-end uses JavaScript to parse the IP expression into a real IP lists"/>
+    <meta name="author" content="PokeyBoa"/>
+    <title>IP-Exp Demo</title>
+    <style>
+        body {
+            background: WhiteSmoke;
+        }
+        h3 {
+            text-align: center;
+            margin: 20px;
+        }
+        .iptest {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            color: blue;
+            width: 320px;
+            height: 20px;
+        }
+        span {
+            margin-left: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        textarea {
+            margin-left: 20px;
+            width: 320px;
+            height: 100px;
+            color: SteelBlue;
+        }
+        #placeholder1 span {
+            color: green;
+        }
+        #placeholder2 span {
+            color: red;
+        }
+    </style>
+    <!-- Official JQuery CDN Web Site -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div>
+        <h3>IP&nbsp;Expression&nbsp;Test</h3>
+        <p>1.&nbsp;&nbsp;The&nbsp;correct&nbsp;sample</p>
+        <input id="test1" class="iptest" type="text" placeholder="IP Address">
+        <p><span>Parser&nbsp;display</span></p>
+        <textarea rows="10" cols="20">ip lists</textarea>
+        <div id="placeholder1"><span></span></div>
+        <br/>
+        <p>2.&nbsp;&nbsp;The&nbsp;wrong&nbsp;sample</p>
+        <input id="test2" class="iptest" type="text" placeholder="IP Address">
+        <div id="placeholder2"><span></span></div>
+    </div>
+</body>
+    <script type="text/javascript" charset="utf-8" src="../src/parserIpexp.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("input[id='test1']").keyup(function() {
+                let ipstr = $(this).val();
+                let res = parserIpExp(ipstr);
+                if (res['state']) {
+                    console.log(res);
+                    $("#placeholder1 span").text("[Info] The IP Expression was successfully resolved.");
+                    let iplists = res['data'].toString();
+                    let ipstr = iplists.replaceAll(",", "\n");
+                    $("textarea").text("[ip_lists]\n" + ipstr);
+                }
+            });
+            $("input[id='test2']").keyup(function() {
+                let ipstr = $(this).val();
+                let res = parserIpExp(ipstr);
+                if (!res['state']) {
+                    console.log(res);
+                    $("#placeholder2 span").text("[Error] Please check the format/content of writing!");
+                }
+            });
+        });
+    </script>
+</html>
+
